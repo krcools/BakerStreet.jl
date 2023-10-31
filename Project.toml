@@ -3,6 +3,10 @@ uuid = "79c3fcf7-ab10-4df2-b330-e2e1bedd9b25"
 authors = ["Kristof Cools <krcools@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
+MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
+
 [compat]
 julia = "1"
 
