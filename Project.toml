@@ -8,6 +8,7 @@ DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
 MacroTools = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
 
 [compat]
+MacroTools = "0.5"
 julia = "1"
 
 [extras]
