@@ -1,8 +1,6 @@
 # BakerStreet
 
-[![Build Status](https://github.com/krcools/BakerStreet.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/krcools/BakerStreet.jl/actions/workflows/CI.yml?query=branch%3Amaster)
-
-This package facilitates one of the many ways DrWatson enables users to set up and run simulations, and to store and retrieve the results of these simulations.
+This package facilitates one of the many ways [DrWatson.jl](https://github.com/JuliaDynamics/DrWatson.jl) enables users to set up and run simulations, and to store and retrieve the results of these simulations.
 
 The workflow targeted by `BakerStreet.jl` has the following structure:
 
@@ -20,7 +18,7 @@ a = [1,2,3]
 df = @collect_results
 ```
 
-The simulation is started on the line by macro @runsims. A configuration is created and the payload method `adder` is called over the Cartesian product of parameter ranges `(a,b)`. The dictionary that is written to disk is the merge of the inputs and outputs of adder (so in this case the keys are `(a,b,c)`). The results are written in a subdirectory of `DrWatson.datadir()` with name `splitext(@__FILE__)[1]`. Likewise, @collect_results looks for output data in this directory.
+The simulation is started on by macro `@runsims`. A configuration is created and the payload method `adder` is called over the Cartesian product of parameter ranges `(a,b)`. The dictionary that is written to disk is the merge of the inputs and outputs of adder (so in this case the keys are `(a,b,c)`). The results are written in a subdirectory of `DrWatson.datadir()` with name `splitext(@__FILE__)[1]`. Likewise, `@collect_results` looks for output data in this directory.
 
 The `DataFrame` created by `@collect_results` is:
 
@@ -53,4 +51,4 @@ Running this script results in the following directory contents:
             a=3_b=20.jld2
 ```
 
-This package can be seen as a template or recipe that encodes a very specific choice for the options and conventions that one can use when running simulations with DrWatson.
+This package can be seen as a template or recipe that encodes a very specific choice for the options and conventions that one can use when running simulations with DrWatson.jl.
