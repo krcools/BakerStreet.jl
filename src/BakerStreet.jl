@@ -3,7 +3,7 @@ module BakerStreet
 using DrWatson
 using MacroTools
 
-export runsims, loadsims
+export runsims, loadsims, getrow
 export @runsims, @simname, @collect_results
 
 function strdict_expr_from_vars(vars)
@@ -67,6 +67,20 @@ end
 
 function loadsims(simname)
     DrWatson.collect_results(datadir(simname))
+end
+
+function getrow(df; kwargs...)
+    for row in eachrow(df)
+        match = true
+        for (k,v) in kwargs
+            if !(row[k] ≈ v)
+                match = false
+                break
+            end
+        end
+        match && return row
+    end
+    return nothing
 end
 
 end
