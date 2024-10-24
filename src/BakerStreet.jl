@@ -3,7 +3,8 @@ module BakerStreet
 using DrWatson
 using MacroTools
 
-export runsims, @runsims, @simname, @collect_results
+export runsims, loadsims
+export @runsims, @simname, @collect_results
 
 function strdict_expr_from_vars(vars)
     expr = Expr(:call, :Dict)
@@ -21,11 +22,11 @@ function strdict_expr_from_vars(vars)
     return expr
 end
 
-function runsims(f, configs; simname, force=false)
+function runsims(f, configs; simname, force=false, kwargs...)
     for config in configs
         @show config
         path = datadir(simname)
-        _, file = produce_or_load(config, path; loadfile=false, force) do cfg
+        _, file = produce_or_load(config, path; loadfile=false, force, kwargs...) do cfg
             config_nt = dict2ntuple(config)
             results_nt = f(;config_nt...)
             data_strdict = merge(config, tostringdict(results_nt))
@@ -33,11 +34,18 @@ function runsims(f, configs; simname, force=false)
     end
 end
 
+function runsims(f, simname::String; force=false, kwargs...)
+    param_ranges_symdict = Dict{Symbol,Any}(k => kwargs[k] for k in keys(kwargs))
+    configs_symdict = DrWatson.dict_list(param_ranges_symdict)
+    configs_strdict = [DrWatson.tostringdict(cf) for cf in configs_symdict]
+    runsims(f, configs_strdict; simname, force)
+end
+
 macro runsims(f, vars...)
     expr = strdict_expr_from_vars(vars)
     simname = splitext(basename(string(__source__.file)))[1]
     r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(simname)))
-    println(r)
+    # println(r)
     return r
 end
 
@@ -55,6 +63,10 @@ end
 
 macro collect_results()
     xp = :(collect_results(datadir($(splitext(basename(string(__source__.file)))[1]))))
+end
+
+function loadsims(simname)
+    DrWatson.collect_results(datadir(simname))
 end
 
 end
