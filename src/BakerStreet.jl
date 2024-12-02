@@ -32,6 +32,7 @@ function runsims(f, configs; simname, force=false, kwargs...)
             data_strdict = merge(config, tostringdict(results_nt))
         end
     end
+    return loadsims(simname)
 end
 
 function runsims(f, simname::String; force=false, kwargs...)
