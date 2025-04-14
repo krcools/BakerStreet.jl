@@ -22,11 +22,24 @@ function strdict_expr_from_vars(vars)
     return expr
 end
 
+function fn_pars_hash(config)
+    bn = DrWatson.savename(config)
+    hs = hash(config)
+    fn = string(bn, "_", hs)
+    @show fn
+    return fn
+end
+
 function runsims(f, configs; simname, force=false, kwargs...)
     for config in configs
         @show config
         path = datadir(simname)
-        _, file = produce_or_load(config, path; loadfile=false, force, kwargs...) do cfg
+        _, file = produce_or_load(config, path;
+            loadfile=false,
+            filename=fn_pars_hash(config),
+            force,
+            kwargs...) do cfg
+
             config_nt = dict2ntuple(config)
             results_nt = f(;config_nt...)
             data_strdict = merge(config, tostringdict(results_nt))
