@@ -31,9 +31,11 @@ function fn_pars_hash(config)
 end
 
 function runsims(f, configs; simname, force=false, kwargs...)
+    path = datadir(simname)
+    @show simname
+    @show path
     for config in configs
         @show config
-        path = datadir(simname)
         _, file = produce_or_load(config, path;
             loadfile=false,
             filename=fn_pars_hash(config),
@@ -57,16 +59,24 @@ end
 
 macro runsims(f, vars...)
     expr = strdict_expr_from_vars(vars)
-    simname = splitext(basename(string(__source__.file)))[1]
-    r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(simname)))
+    fn = string(__source__.file)
+    rp = dirname(relpath(fn, projectdir()))
+    sn = splitext(basename(fn))[1]
+    path = joinpath(rp, sn)
+    # simname = splitext(basename(string(__source__.file)))[1]
+    r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(path)))
     # println(r)
     return r
 end
 
 macro runsims_force(f, vars...)
     expr = strdict_expr_from_vars(vars)
-    simname = splitext(basename(string(__source__.file)))[1]
-    r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(simname), force=true))
+    fn = string(__source__.file)
+    rp = dirname(relpath(fn, projectdir()))
+    sn = splitext(basename(fn))[1]
+    path = joinpath(rp, sn)
+    # simname = splitext(basename(string(__source__.file)))[1]
+    r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(path), force=true))
     println(r)
     return r
 end
@@ -76,10 +86,15 @@ macro simname()
 end
 
 macro collect_results()
-    xp = :(collect_results(datadir($(splitext(basename(string(__source__.file)))[1]))))
+    fn = string(__source__.file)
+    rp = dirname(relpath(fn, projectdir()))
+    sn = splitext(basename(fn))[1]
+    path = joinpath(rp, sn)
+    xp = :(collect_results(datadir($(path))))
 end
 
 function loadsims(simname)
+    @show datadir(simname)
     DrWatson.collect_results(datadir(simname))
 end
 
