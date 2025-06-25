@@ -26,16 +26,16 @@ function fn_pars_hash(config)
     bn = DrWatson.savename(config)
     hs = hash(config)
     fn = string(bn, "_", hs)
-    @show fn
+    # @show fn
     return fn
 end
 
 function runsims(f, configs; simname, force=false, kwargs...)
     path = datadir(simname)
-    @show simname
-    @show path
+    # @show simname
+    # @show path
     for config in configs
-        @show config
+        # @show config
         _, file = produce_or_load(config, path;
             loadfile=false,
             filename=fn_pars_hash(config),
@@ -94,7 +94,7 @@ macro collect_results()
 end
 
 function loadsims(simname)
-    @show datadir(simname)
+    # @show datadir(simname)
     DrWatson.collect_results(datadir(simname))
 end
 
