@@ -10,7 +10,7 @@ a = [1,2,3]
 b = [10,20]
 
 cfgs = DrWatson.dict_list(tostringdict((;a,b)))
-BakerStreet.runsims(adder, cfgs, simname=@simname, filename=hash)
+df = BakerStreet.runsims(adder, cfgs, simname=@simname, filename=hash)
 
 # df = @collect_results
 
@@ -18,8 +18,8 @@ BakerStreet.runsims(adder, cfgs, simname=@simname, filename=hash)
 
 
 
-println(@__FILE__)
+# println(@__FILE__)
 
-function q2(x = @simname)
-    println(x)
-end
+# function q2(x = @simname)
+#     println(x)
+# end

@@ -8,4 +8,4 @@ end
 a = [1,2,3]
 df = @runsims adder a b=[10,20]
 
-df = @collect_results
+# df = @collect_results

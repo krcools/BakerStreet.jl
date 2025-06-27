@@ -26,16 +26,12 @@ function fn_pars_hash(config)
     bn = DrWatson.savename(config)
     hs = hash(config)
     fn = string(bn, "_", hs)
-    # @show fn
     return fn
 end
 
 function runsims(f, configs; simname, force=false, kwargs...)
     path = datadir(simname)
-    # @show simname
-    # @show path
     for config in configs
-        # @show config
         _, file = produce_or_load(config, path;
             loadfile=false,
             filename=fn_pars_hash(config),
@@ -47,7 +43,7 @@ function runsims(f, configs; simname, force=false, kwargs...)
             data_strdict = merge(config, tostringdict(results_nt))
         end
     end
-    return loadsims(simname)
+    return loadsims(simname, configs)
 end
 
 function runsims(f, simname::String; force=false, kwargs...)
@@ -63,9 +59,7 @@ macro runsims(f, vars...)
     rp = dirname(relpath(fn, projectdir()))
     sn = splitext(basename(fn))[1]
     path = joinpath(rp, sn)
-    # simname = splitext(basename(string(__source__.file)))[1]
     r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(path)))
-    # println(r)
     return r
 end
 
@@ -75,7 +69,6 @@ macro runsims_force(f, vars...)
     rp = dirname(relpath(fn, projectdir()))
     sn = splitext(basename(fn))[1]
     path = joinpath(rp, sn)
-    # simname = splitext(basename(string(__source__.file)))[1]
     r = :(runsims($(esc(f)), dict_list($(expr)); simname=$(path), force=true))
     println(r)
     return r
@@ -93,9 +86,22 @@ macro collect_results()
     xp = :(collect_results(datadir($(path))))
 end
 
-function loadsims(simname)
-    # @show datadir(simname)
-    DrWatson.collect_results(datadir(simname))
+function loadsims(simname, configs=nothing)
+    
+    df = DrWatson.collect_results(datadir(simname))
+    configs == nothing && return df
+
+    df = filter!(df) do row
+        for config in configs
+            config_found = true
+            for (k,v) in pairs(config)
+                row[k] != v && (config_found = false) && break
+            end
+            config_found && return true
+        end
+        println("Discarrd: ", row)
+        return false
+    end
 end
 
 function getrow(df; kwargs...)
