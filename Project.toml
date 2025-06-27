@@ -1,7 +1,7 @@
 name = "BakerStreet"
 uuid = "79c3fcf7-ab10-4df2-b330-e2e1bedd9b25"
 authors = ["Kristof Cools <krcools@gmail.com> and contributors"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"

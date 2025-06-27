@@ -18,9 +18,9 @@ a = [1,2,3]
 df = @collect_results
 ```
 
-The simulation is started on by macro `@runsims`. A configuration is created and the payload method `adder` is called over the Cartesian product of parameter ranges `(a,b)`. The dictionary that is written to disk is the merge of the inputs and outputs of adder (so in this case the keys are `(a,b,c)`). The results are written in a subdirectory of `DrWatson.datadir()` with name `splitext(@__FILE__)[1]`. Likewise, `@collect_results` looks for output data in this directory.
+The simulation is started on by macro `@runsims`. A configuration is created and the payload method `adder` is called over the Cartesian product of parameter ranges `(a,b)`. The dictionary that is written to disk is the merge of the inputs and outputs of adder (so in this case the keys are `(a,b,c)`). The results are written in a subdirectory of `DrWatson.datadir()`. Likewise, `@collect_results` looks for output data in this directory.
 
-The `DataFrame` created by `@collect_results` is:
+The `DataFrame` returned by `@collect_results` is:
 
 ```
  Row │ c       b       a       path
