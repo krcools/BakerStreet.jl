@@ -99,7 +99,6 @@ function loadsims(simname, configs=nothing)
             end
             config_found && return true
         end
-        println("Discarrd: ", row)
         return false
     end
 end
