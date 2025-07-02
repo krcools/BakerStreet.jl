@@ -95,7 +95,7 @@ function loadsims(simname, configs=nothing)
         for config in configs
             config_found = true
             for (k,v) in pairs(config)
-                row[k] != v && (config_found = false) && break
+                row[k] !== v && (config_found = false) && break
             end
             config_found && return true
         end
